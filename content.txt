@@ -203,4 +203,50 @@ fetcher - const fetcher = (...args) => fetch(...args).then(res => res.json())
 it will show the data after the loading is done(isLoading == false)
 Powerful function of swr is auto-revalidation
 const {mutate} = useSWRConfig();
-mutate("endpoint") - mutate refetch the data from endpoint and update the cached data(in the RAM or in the browser cache) with new response, it can be done manually to update the cache only with mutate("endpoint", newData) 
+mutate("endpoint") - mutate refetch the data from endpoint and update the cached data(in the RAM or in the browser cache) with new response, it can be done manually to update the cache only with mutate("endpoint", newData)
+
+axios - library to make http requests, simpler and more intuitive than fetch(), promise based, easy to use, easy to do exception handling
+how it works -
+1. make an instance of axios by importing the library and using axios funtion.
+2. configure the instance via passing an options object to the axios instance with baseURL, headers, etc
+3. use the instance to make http requests by calling methods on the instance, like get(), post(), put(), delete(), etc
+4. handle the response - axios receives the response from the server and parses it into the JS object.
+5. Returning the response - return the response to the caller, which can then be used to extract data, handle errors, etc.
+
+Code examples
+1. import axios from 'axios';
+2. const toDoApi = axios.create({
+    baseURL: `${import.meta.env.VITE_TODO_API}/tasks`,
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+3.,4. const addTask = async (newTask) => {
+    const response = await toDoApi.post("/", newTask);
+    // return response.data;
+    mutate(`${import.meta.env.VITE_TODO_API}/tasks`);
+  };
+
+
+import axios from 'axios';
+axios.get('https://api.example.com/data')
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+fetch('https://api.example.com/data')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error(error));
+
+.env file - the file to store environment variables, such as API endpoints, API keys, etc.
+The pros of env file is if you switch the environment like from local to production, you won't need to change every endpoints, keys, etc, just change in the .env file one place and your software will run in the new environment.
+!!! .env file must be in the .gitignore file, so that it won't be uploaded to github.
+.env.example - example of .env file, can be used as a template (original one is .gitignore)
+
+.env.local - local development environment variables
+.env.test - test environment variables
+.env.prod - production environment variables
