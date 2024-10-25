@@ -1,0 +1,206 @@
+
+
+
+
+
+
+Day 7 -
+zustand
+
+Day 8 -
+const price = products.find(({id}) => id == cv.productId).price;
+
+1. products.find()
+
+find() is a method that is part of the Array prototype in JavaScript. It allows you to iterate over an array and return the first element that matches a certain condition.
+In this case, products is an array of objects, and find() is being called on it. The method takes a callback function as an argument, which will be executed for each element in the array.
+
+2. ({id}) => id == cv.productId
+
+This is the callback function that is being passed to find(). It's an arrow function that takes an object with an id property as an argument.
+Here's what's happening in this function:
+
+({id}) is using destructuring to extract the id property from the object that is being passed to the function. This is equivalent to writing function(obj) { var id = obj.id; ... }.
+id == cv.productId is the condition that is being checked. It's comparing the id property of the object to the productId property of the cv object.
+The == operator is used for loose equality checking, which means that it will return true if the values are equal, even if they are not of the same type. For example, 5 == '5' would return true.
+
+3. .price
+
+If the condition id == cv.productId is true, the find() method will return the entire object that matches the condition. The .price property is then accessed on that object to retrieve the price value.
+
+So, when we put all these parts together, here's what happens:
+
+products.find() iterates over the products array and calls the callback function for each element.
+The callback function checks if the id property of the element matches the productId property of the cv object.
+If a match is found, the find() method returns the entire object that matches the condition.
+The .price property is then accessed on that object to retrieve the price value, which is assigned to the price variable.
+Here's an example to illustrate this:
+
+Suppose products is an array of objects like this:
+
+json
+[
+  { id: 1, price: 10.99 },
+  { id: 2, price: 5.99 },
+  { id: 3, price: 7.99 }
+]
+And cv is an object with a productId property like this:
+
+{ productId: 2 }
+When we call products.find(({id}) => id == cv.productId).price, the find() method will iterate over the products array and check each element's id property against the productId property of the cv object.
+
+When it finds a match (in this case, the second element with id equal to 2), it will return that entire object, and then access the .price property to retrieve the price value, which is 5.99. This value is then assigned to the price variable
+
+The same with const price = products.find((el) => el.id == cv.productId).price;
+
+Programmatic route - programmatically navigating between routes
+const navigate = useNavigate(); // useNavigate is a hook from react-router-dom
+const handleCardOpen = () => {
+    navigate(`/product-detail/${id}`);
+  };
+toaster - react-hot-toast for noti and alert
+sweetalert2
+URL param
+{
+  path: "product-detail/:productId",
+  element: <ProductDetail />,
+}, why there is a : in "product-detail/:productId"
+
+
+In React Router, the colon (:) is used to indicate a URL parameter. In this case, :productId is a URL parameter that will be passed to the ProductDetail component.
+
+This means that when a user navigates to a URL like /product-detail/123, the productId parameter will be set to 123. The ProductDetail component can then access this parameter using the useParams hook, as seen in the ProductDetail component code (src/pages/ProductDetail.jsx:ProductDetail):
+const { productId } = useParams();
+This allows the ProductDetail component to render the details of the product with the specified ID.
+
+Day 9 -
+filter by category -
+const currentCategory = categories.find((category) => category.isActive == true);
+{products.filter(el => currentCategory == "all" || el.category == currentCategory).map((product) => (
+  <ProductCard key={product.id} product={product} />
+))}
+showing url via slug -
+must have slug on each element of products array
+change router.js param to slug
+api -
+https://rapidapi.com/learn/rest#what-is-an-api
+http - 80, https - 443
+config ml so header lo - Content-Type:"application/json"
+JSON - javascript object notation
+no comma after last element, quote all string elements
+Json Server -
+json must be start with object, and in this object must have key, and value array of elements
+example  - {"tasks": [{...},{...}]}
+post man REST api CRUD
+
+Day 10 -
+if you know the endpoint, can request the data from postman or browser or terminal
+for security purposes, we need to limit the place it can be accessed from
+curl https://api.fastforex.io/fetch-all?api_key=YOUR_API_KEY
+curl https://api.fastforex.io/fetch-all?api_key=d84611ce79-f69a495ac2-sif3cv
+Controlling access with an api key, but it has an effet of everyone can see the key in the url
+Log in, register and get an api key(token) with mmsit contact application
+
+api fetching
+web api > fetch api
+promise(read in detail)
+fetch(url) - we need to wait for the data to arrive so it's a promise. use .then((response) => {console.log(response)}) to get the data after it arrives.
+it returns a response object, in which we can get the data by .json() or .text(), but it still arrive in promise so we need another .then().
+fetch("http://localhost:5000/tasks")
+  .then((response) => response.text())
+  .then((data) => clg(data))
+it is text so we can't do much processing with the data so we need to use JSON.parse().
+alternatively, we can use .json() in the response object
+fetch("http://localhost:5000/tasks")
+  .then((response) => response.json())
+  .then((data) => clg(data))
+we can get the data from any api endpoint using this.
+
+Day 11 -
+to run the json-server from npm command, package.json>scripts>api>json-server tasks.json -d 1000 -p 5000
+sync-async
+sync - one by one, in order, file_get_contents() in php
+async - all start at the same time and end whichever end first, fetch() in js, and unusually, built-in object promise is async
+in JS, web api are async processes and the rest are sync processes
+if you need to check the store stock and return the data, you need to make a request to the server then wait for the response. if you coded in a way that you return the data immediately, the initial value will be returned, not the actual stock, it is due to async nature. we need to make sure that it is sync nature.
+Promise Object - 
+const p = new Promise(), executor function as param, function executor(resolve, reject), two functions as params of executor.\
+const p = new Promise(function(resolve, reject) {
+  ......... do something
+  if (success)  resolve(data)
+  else reject(data)
+})
+it's a promise so we can use .then() to catch the data after background process is done
+p.then(resolve function, reject function)
+p.then(
+  function(x) {clg("success", x)},
+  function(y) {clg("fail", y)}
+)
+if we want fetch() api to behave like sync, we need to write them inside one another .then resolve function, it get pretty messy soon
+async await -
+declare the function as async function - async function() { await }
+then await the promise, got response obj with data in it being promise, await the reponse data promise againg and get the data
+it schedule the the parallel running asyn processes in the function so that it look like it's sync,
+but under the hood, it's still async (async/await scheduling)
+Errors - logic error, sentence error, runtime error(calling not defined variables, functions etc)
+Exception Handling -
+try {
+  do something
+} catch (e) {
+  console.error(e)
+} finally {
+  console.log("ill show there's error or not")
+}
+
+Day 12 - 
+useEffect() - syntax - useEffect(af, dependency array) - useEffect(() => {}, [])
+pure function has no side effect, useEffect() runs when the component is mounted to the view and normally contains non-pure functions, or functions that need to be run as soon as the component is rendered.
+make another useState for loading (true, false) and show loading animation according to the state.
+CRUD for json-server
+spinny loading ball - https://uiball.com/ldrs/
+
+Delete skeleton loading -
+const [deleting, setDeleting] = useState({});
+why? because we need to know the id of the task to show the loading animation on that task, so we can't use the normal loading useState(flase)
+then while setting the state, 
+setDeleting({[id]: true})
+[id] is the dynamic property name or computed property name, it is a way to create the property name using a variable.
+// deleting code ....
+setDeleting({[id]: false})
+in Task component check with if(deleting && deleting[id]) then return the loading animation component.
+why (deleting && deleting[id])? because checking the object exists or not before accessing it, is the common pattern and help prevents runtime errors.
+The same applied to checkbox loading ui ball
+
+Day 13 -
+Revision
+JS paradigm
+React - view - react node
+React-dom - render
+JSX
+prop - prop drilling hell
+React-router-dom
+hook
+State - useState() - one way data binding, parent to child only
+Local State - declare in this component and use in this component
+App State - root component state, declare in root component and use in other components, one change in one component view in other component, prop drilling hell
+Context Api (Global State) - Provider - context hell
+zustand (Global State) - hook
+Global State -
+All the state are in the RAM, not persistent, not save, no data after reload, local device
+Server State -
+Backend
+API - REST API
+Json-server
+no real time, only request-response
+not the same of server data and client data, so need to revalidate the data, fetch the data again after adding or changing the data from another client(browser, mobile, etc) to the server
+if you open the to-do api in two browsers and add one thing in chrome, it will show in chrome as new task, and if you add another task in firefox, it, the task you added from firefox, will only show in firefox as new task, which means you can't see the task added from chrome in firefox. The data is there on the json-server, not in the browser. That's why we need to revalidate the data. (fetch the server data again)
+SWR- Stale-while-revalidate
+When you use SWR to fetch data from an API, SWR will cache the response in RAM or in browser cache, to save from making a new network request. Cached data is stored in key-value store, typically with api endpoint as key and response as value. So if you call SWR with a specific key, it will check the cache for that key, if there's one, it will return from the cached data.
+SWR use a technique call stale-while-revalidate, if the cached data is stale(older than a certain time), it will send a background request to fetch latest data from the srver. 
+const {} = useSWR("endpoint", fetcher_function); return object with data, error, isLoading properties.
+const {data, error, isLoading} = useSWR("endpoint", fetcher_function);
+fetcher - const fetcher = (...args) => fetch(...args).then(res => res.json())
+it will show the data after the loading is done(isLoading == false)
+Powerful function of swr is auto-revalidation
+const {mutate} = useSWRConfig();
+mutate("endpoint") - mutate refetch the data from endpoint and update the cached data(in the RAM or in the browser cache) with new response, it can be done manually to update the cache only with mutate("endpoint", newData) 

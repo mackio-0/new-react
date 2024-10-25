@@ -1,0 +1,29 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "task": "Complete JavaScript assignment",
+      "isDone": true
+    },
+    {
+      "task": "write note about each task deletion loading",
+      "isDone": true,
+      "id": 2
+    },
+    {
+      "task": "how it is done",
+      "isDone": false,
+      "id": 3
+    },
+    {
+      "task": "hello test",
+      "isDone": true,
+      "id": 4
+    },
+    {
+      "task": "app",
+      "isDone": true,
+      "id": 5
+    }
+  ]
+}
