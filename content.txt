@@ -250,3 +250,8 @@ The pros of env file is if you switch the environment like from local to product
 .env.local - local development environment variables
 .env.test - test environment variables
 .env.prod - production environment variables
+
+Day 14 -
+Why we need software?
+Voucher app figma
+
