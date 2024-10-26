@@ -6,7 +6,6 @@ export default {
     "./node_modules/flowbite/**/*.js",
   ],
   theme: {
-    fontFamily: ["Montserrat", "Padauk", "sans-serif"],
     extend: {},
   },
   plugins: [require("flowbite/plugin")],
