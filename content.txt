@@ -254,4 +254,15 @@ The pros of env file is if you switch the environment like from local to product
 Day 14 -
 Why we need software?
 Voucher app figma
-
+Folder setup and Router setup
+Font setup, in index.css and tailwind.config.js-theme-fontFamily:{}
+Layout and Container setup
+Module and Feature
+Modules
+- Product
+  -- create, read, update, delete, search, sort, pagination
+- Sale
+  -- create
+- Voucher
+  -- read, filter
+Product page Breadcrumb flowbite setup

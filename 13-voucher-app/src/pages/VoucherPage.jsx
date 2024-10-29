@@ -1,10 +1,16 @@
 import React from 'react'
+import ContainerComponent from '../components/ContainerComponent'
+import Breadcrumb from '../components/Breadcrumb'
+import VoucherList from '../components/VoucherList'
 
 const VoucherPage = () => {
   return (
-    <div>
-      Voucher
-    </div>
+    <section>
+      <ContainerComponent>
+        <Breadcrumb currentPageName={"Voucher Module"}/>
+        <VoucherList/>
+      </ContainerComponent>
+    </section>
   )
 }
 
