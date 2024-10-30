@@ -10,7 +10,7 @@ import {
 const DashboardPage = () => {
   return (
     <section>
-      <ContainerComponent>
+
         <div className="grid md:grid-cols-3 grid-rows-3 gap-5">
           <div className="col-span-1 row-span-1">
             <ModuleBtn
@@ -34,7 +34,6 @@ const DashboardPage = () => {
             />
           </div>
         </div>
-      </ContainerComponent>
     </section>
   );
 };

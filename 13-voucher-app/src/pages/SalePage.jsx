@@ -5,9 +5,7 @@ import Breadcrumb from '../components/Breadcrumb'
 const SalePage = () => {
   return (
     <section>
-      <ContainerComponent>
         <Breadcrumb currentPageName={"Sale Module"}/>
-      </ContainerComponent>
     </section>
   )
 }

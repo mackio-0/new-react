@@ -6,10 +6,8 @@ import VoucherList from '../components/VoucherList'
 const VoucherPage = () => {
   return (
     <section>
-      <ContainerComponent>
         <Breadcrumb currentPageName={"Voucher Module"}/>
         <VoucherList/>
-      </ContainerComponent>
     </section>
   )
 }
