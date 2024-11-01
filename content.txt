@@ -300,3 +300,6 @@ send data to json-server
 add loading animation for submit btn
 implement react hot toast and make it toast on submit success(read the documentation carefully)
 reset the form after submit
+toast for product delete
+add back to product list checkbox and implement the code to do programmatic route back to productList page
+modify the data sent to server, remove unnecessary one.

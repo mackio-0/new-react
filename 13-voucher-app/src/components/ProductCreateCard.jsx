@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "ldrs/tailspin";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -13,21 +13,24 @@ const ProductCreateCard = () => {
   } = useForm();
 
   const [isSending, setIsSending] = useState(false);
+  const navigate = useNavigate();
 
   const handleProductForm = async (data) => {
     setIsSending(true);
-    data.created_at = new Date().toISOString();
-    // console.log(data);
+    console.log(data);
     await fetch(`${import.meta.env.VITE_API_URL}/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({product_name: data.product_name, price: data.price, created_at: new Date().toISOString()}),
     });
 
     setIsSending(false);
     reset();
+    if (data.bact_to_product_list) {
+      navigate("/product");
+    }
     toast.success("Product created successfully!");
   };
 
@@ -55,7 +58,7 @@ const ProductCreateCard = () => {
             {...register("product_name", {
               required: true,
               minLength: 3,
-              maxLength: 10,
+              maxLength: 30,
             })}
             className={`bg-gray-50 border ${
               errors.product_name
@@ -135,6 +138,21 @@ const ProductCreateCard = () => {
             } dark:text-gray-300`}
           >
             Make Sure all the informations are correct
+          </label>
+        </div>
+        <div className=" mb-3">
+          <input
+            id="bact_to_product_list"
+            type="checkbox"
+            {...register("bact_to_product_list")}
+            defaultValue
+            className={`w-4 h-4 bg-gray-100 border-gray-300 rounded  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600`}
+          />
+          <label
+            htmlFor="bact_to_product_list"
+            className="ms-2 text-sm font-medium dark:text-gray-300"
+          >
+            Back to product list after saving
           </label>
         </div>
         <div>

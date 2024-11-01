@@ -4,13 +4,14 @@ import DashboardPage from "./pages/DashboardPage";
 import ProductPage from "./pages/ProductPage";
 import SalePage from "./pages/SalePage";
 import VoucherPage from "./pages/VoucherPage";
-import NotFoundPage from './pages/NotFoundPage';
+import NotFoundPage from "./pages/NotFoundPage";
 import ProductCreatePage from "./pages/ProductCreatePage";
+import ProductEditPage from "./pages/ProductEditPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,    
+    element: <Layout />,
     errorElement: <NotFoundPage />,
     children: [
       {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/product/create",
         element: <ProductCreatePage />,
+      },
+      {
+        path: "/product/edit/:id",
+        element: <ProductEditPage />,
       },
       {
         path: "/sale",
