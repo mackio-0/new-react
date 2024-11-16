@@ -303,3 +303,33 @@ reset the form after submit
 toast for product delete
 add back to product list checkbox and implement the code to do programmatic route back to productList page
 modify the data sent to server, remove unnecessary one.
+
+Day 16 -
+Make a form for the customer info and voucher id
+copy from the product card label and input, then implement useForm()
+default value for date and voucher id
+Two components for the product form and product list table
+VoucherInfor > SaleForm > VoucherTable
+we need to send the state data between the two components, so we need to use global state. 
+
+saleForm has the product_id for the option, but we need to get the product name or price etc.
+normally we have to retrace them from the fetched data via product_id user has selected.
+So we will give the whole product object as the value for the option tag but we can't do that because js obj will not be shown in the html, [Object Object] only.
+So we need to turn that object into string by JSON.stringify().
+Then change the useForm register("product_id") to register("product").
+Then we can get the product string and parse it to get the product object in formData.
+
+<option key={product.id} value={JSON.stringify(product)}>
+  {product.product_name}
+</option>
+
+const onSubmit = (formData) => {
+  const currentProduct = JSON.parse(formData.product)
+  console.log({
+    product_id: currentProduct.id,
+    product_name: currentProduct.product_name,
+    price: currentProduct.price,
+    quantity: formData.quantity,
+    cost: formData.quantity * currentProduct.price,
+  });
+};
