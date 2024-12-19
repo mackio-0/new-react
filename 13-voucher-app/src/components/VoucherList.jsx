@@ -2,8 +2,15 @@ import React from 'react'
 import { HiDesktopComputer, HiSearch } from "react-icons/hi";
 import { HiComputerDesktop, HiOutlinePencil, HiOutlineTrash, HiPlus } from "react-icons/hi2";
 import { Link } from 'react-router-dom';
+import useSWR from 'swr';
+import VoucherListRow from './VoucherListRow';
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const VoucherList = () => {
+
+  const {data, error, isLoading} = useSWR(`${import.meta.env.VITE_API_URL}/vouchers`, fetcher)
+
   return (
     <div>
       <div className=" flex justify-between">
@@ -34,7 +41,7 @@ const VoucherList = () => {
           <thead className="text-xs text-stone-700 uppercase bg-stone-50 dark:bg-stone-700 dark:text-stone-400">
             <tr>
               <th scope="col" className="px-6 py-3">
-                #
+                Voucher ID
               </th>
               <th scope="col" className="px-6 py-3">
                 Customer Name
@@ -59,36 +66,7 @@ const VoucherList = () => {
                 There is no voucher.
               </td>
             </tr>
-            <tr className="odd:bg-white odd:dark:bg-stone-900 even:bg-stone-50 even:dark:bg-stone-800 border-b dark:border-stone-700">
-              <td className="px-6 py-4">1</td>
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-stone-900 whitespace-nowrap dark:text-white"
-              >
-                Kyaw Kyaw
-              </th>
-              <td className="px-6 py-4">kyaw@gmail.com</td>
-              <td className="px-6 py-4 text-end">
-                <p className=" text-xs">29 Sep 24</p>
-                <p className=" text-xs">12:00 AM</p>
-              </td>
-              <td className="px-6 py-4 text-end">
-                <div className="inline-flex rounded-md shadow-sm" role="group">
-                  <button
-                    type="button"
-                    className="px-4 py-2 text-sm font-medium text-stone-900 bg-white border border-stone-200 rounded-s-lg hover:bg-stone-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-stone-800 dark:border-stone-700 dark:text-white dark:hover:text-white dark:hover:bg-stone-700 dark:focus:ring-blue-500 dark:focus:text-white"
-                  >
-                    <HiOutlinePencil/>
-                  </button>
-                  <button
-                    type="button"
-                    className="px-4 py-2 text-sm font-medium text-red-600 bg-white border border-stone-200 rounded-e-lg hover:bg-stone-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-stone-800 dark:border-stone-700 dark:text-white dark:hover:text-white dark:hover:bg-stone-700 dark:focus:ring-blue-500 dark:focus:text-white"
-                  >
-                    <HiOutlineTrash/>
-                  </button>
-                </div>
-              </td>
-            </tr>
+            {!isLoading && data.map((voucher, index) => <VoucherListRow key={index} voucher={voucher}/>)}
           </tbody>
         </table>
       </div>

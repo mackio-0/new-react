@@ -4,6 +4,7 @@ import "ldrs/tailspin";
 import toast, { Toaster } from "react-hot-toast";
 import SaleForm from "./SaleForm";
 import VoucherTable from "./VoucherTable";
+import useRecordStore from "../stores/useRecordStore";
 
 const VoucherInfo = () => {
   const {
@@ -14,6 +15,8 @@ const VoucherInfo = () => {
   } = useForm();
 
   const [isSending, setIsSending] = useState(false);
+
+  const { records, resetRecords } = useRecordStore();
 
   function generateInvoiceNumber() {
     // Get the current date and time as a base for the invoice number
@@ -37,8 +40,31 @@ const VoucherInfo = () => {
   }
   //   console.log(generateInvoiceNumber())
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    setIsSending(true);
+    const total = records.reduce((pv, cv) => pv + cv.cost, 0);
+    const tax = total * 0.1;
+    const grandTotal = total + tax;
+    // console.log({ ...data, records, total, tax, grandTotal });
+    const currentVoucher = { ...data, records, total, tax, grandTotal }
+
+    await fetch(`${import.meta.env.VITE_API_URL}/vouchers`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(currentVoucher),
+    });
+    setIsSending(false);
+    reset();
+    resetRecords();
+    toast.success("Voucher created successfully", {
+      duration: 1500,
+      style: {
+        background: "#333",
+        color: "#fff",
+      },
+    })
   };
 
   return (
@@ -152,7 +178,7 @@ const VoucherInfo = () => {
 
       <SaleForm />
       <VoucherTable />
-      
+
       <div className="flex justify-end items-center gap-5">
         <div className="">
           <input

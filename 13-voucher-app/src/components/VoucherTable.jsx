@@ -1,19 +1,23 @@
 import React from "react";
 import useRecordStore from "../stores/useRecordStore";
 import VoucherTableRow from "./VoucherTableRow";
-import ProductCreateCard from './ProductCreateCard';
+import ProductCreateCard from "./ProductCreateCard";
 
 const VoucherTable = () => {
   const { records } = useRecordStore();
   // console.log(records)
 
-  const currentRecordState = useRecordStore.getState();
-  const totalCost = currentRecordState.records.reduce(
-    (total, record) => total + (record.quantity * record.product.price),
-    0
-  );
+  // const currentRecordState = useRecordStore.getState();
+  // const totalCost = currentRecordState.records.reduce(
+  //   (total, record) => total + record.quantity * record.product.price,
+  //   0
+  // );
   // console.log(currentRecordState.records)
   // console.log(totalCost)
+
+  const total = records.reduce((pv, cv) => pv + cv.cost, 0);
+  const tax = total * 0.1;
+  const grandTotal = total + tax;
 
   return (
     <div className="relative shadow-md sm:rounded-lg overflow-hidden mb-5">
@@ -55,10 +59,30 @@ const VoucherTable = () => {
         </tbody>
         <tfoot>
           <tr className="border-b">
-            <td className="px-6 py-4 text-center" colSpan={4}>
+            <td className="px-6 py-4 text-end" colSpan={4}>
               Total
             </td>
-            <td className="px-6 py-4 text-end">{totalCost}</td>
+            <td className="px-6 py-4 text-end">
+              {total.toFixed(2)}
+            </td>
+            <td className="px-6 py-4 text-end"> </td>
+          </tr>
+          <tr className="border-b">
+            <td className="px-6 py-4 text-end" colSpan={4}>
+              Tax (VAT 10%)
+            </td>
+            <td className="px-6 py-4 text-end">
+              {tax.toFixed(2)}
+            </td>
+            <td className="px-6 py-4 text-end"> </td>
+          </tr>
+          <tr className="border-b">
+            <td className="px-6 py-4 text-end" colSpan={4}>
+              Grand Total
+            </td>
+            <td className="px-6 py-4 text-end">
+              {grandTotal.toFixed(2)}
+            </td>
             <td className="px-6 py-4 text-end"> </td>
           </tr>
         </tfoot>

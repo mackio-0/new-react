@@ -4,6 +4,7 @@ import { useSWRConfig } from "swr";
 import "ldrs/bouncy";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import ShowTime from "./ShowTime";
 
 const ProductListRow = ({
   product: { id, product_name, price, created_at },
@@ -11,17 +12,7 @@ const ProductListRow = ({
   const [isDeleting, setIsDeleting] = useState(false);
   // const hehe = useState("hehe")  
   // console.log(hehe)
-  const createDate = new Date(created_at).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
-
-  const createTime = new Date(created_at).toLocaleTimeString("en-GB", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
+  
 
   const { mutate } = useSWRConfig();
   const handleDeleteBtn = async () => {
@@ -48,8 +39,7 @@ const ProductListRow = ({
       </th>
       <td className="px-6 py-4 text-end">{price}</td>
       <td className="px-6 py-4 text-end">
-        <p className=" text-xs">{createDate}</p>
-        <p className=" text-xs">{createTime}</p>
+        <ShowTime timestamp={created_at}/>
       </td>
       <td className="px-6 py-4 text-end">
         <div className="inline-flex rounded-md shadow-sm" role="group">

@@ -1,12 +1,13 @@
 import React from "react";
 import { Container } from "../components/Container";
-import BreadCrumb from "../components/BreadCrumb";
+// import Breadcrumb from "../components/BreadCrumb";
 import CartSection from "../components/CartSection";
+import Breadcrumb from '../components/Breadcrumb';
 
 const MyCart = () => {
   return (
     <Container className="flex-grow">
-      <BreadCrumb currentPageTitle="My Cart" />
+      <Breadcrumb currentPageTitle="My Cart" />
       <CartSection />
     </Container>
   );

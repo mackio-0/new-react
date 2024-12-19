@@ -12,7 +12,7 @@ const VoucherTableRow = ({
   },
 }) => {
   //   console.log(record);
-  const {records, deleteRecord, increaseQuantity, decreaseQuantity} = useRecordStore();
+  const {records, deleteRecord, increaseQuantity, decreaseQuantity, changeQuantity} = useRecordStore();
 
   const handleDelBtn = (recordId) => {
     deleteRecord(recordId)
@@ -22,11 +22,13 @@ const VoucherTableRow = ({
 
   const handleIncreaseQtyBtn = (recordId) => {
     // console.log(recordId)
-    increaseQuantity(recordId)
+    // increaseQuantity(recordId)
+    changeQuantity(recordId, 1)
   }
 
   const handleDecreaseQtyBtn = (recordId) =>{
-    decreaseQuantity(recordId)
+    // decreaseQuantity(recordId)
+    changeQuantity(recordId, -1)
     // if we only find the current record, it will not be updated with decreaseQuantity() so we need to grab the current state of useRecordStore.
     const currentRecordState = useRecordStore.getState();
     const currentRecord = currentRecordState.records.find(record => record.id === recordId)
@@ -37,7 +39,7 @@ const VoucherTableRow = ({
     }
   }
 
-  const totalPrice = quantity * price;
+  // const totalPrice = quantity * price;
 //   console.log(totalPrice);
 
 
@@ -87,7 +89,7 @@ const VoucherTableRow = ({
         </button>
       </td>
       <td className="px-6 py-4 text-end relative">
-        <span className="record-cost">{totalPrice}</span>
+        <span className="record-cost">{cost}</span>
       </td>
       <td className="text-center">
         <button onClick={() => handleDelBtn(id)} className="duration-200 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto  top-3 translate-x-2 active:scale-75 bg-blue-100 p-2 rounded-lg">

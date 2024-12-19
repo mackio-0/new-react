@@ -3,7 +3,9 @@ import { useParams } from "react-router-dom";
 import products from "../data/products";
 import { Container } from "../components/Container";
 import Rating from "../components/Rating";
-import BreadCrumb from "../components/BreadCrumb";
+// import BreadCrumb from "../components/BreadCrumb";
+// import BreadCrumb from '../components/Breadcrumb';
+import Breadcrumb from "../components/Breadcrumb";
 
 const ProductDetail = () => {
   const { productId } = useParams();
@@ -15,7 +17,7 @@ const ProductDetail = () => {
   // console.log(useParams());
   return (
     <Container>
-      <BreadCrumb currentPageTitle="Product Detail" />
+      <Breadcrumb currentPageTitle="Product Detail" />
       <div className=" border border-black p-10 ">
         <div className=" grid grid-cols-2">
           <div className=" col-span-1">

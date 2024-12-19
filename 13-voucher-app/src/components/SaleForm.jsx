@@ -17,11 +17,12 @@ const SaleForm = () => {
     reset,
   } = useForm();
 
-  const { addRecord } = useRecordStore();
+  const { addRecord, records, changeQuantity } = useRecordStore();
 
   const onSubmit = (formData) => {
     // console.log(formData)  // quantity is a string
     const currentProduct = JSON.parse(formData.product);
+    const currentProductId = currentProduct.id;
     // console.log(currentProduct)
     // console.log({
     //   id: Date.now(),
@@ -31,14 +32,28 @@ const SaleForm = () => {
     //   created_at: new Date().toISOString(),
     // });
 
+    const isExisted = records.find(
+      ({ product: { id } }) => id === currentProductId
+    ); // find will return the first matched record object, which we need because we want to update the quantity by id of that record
+    // const isExisted = records.some(({ product: { id } }) => id === currentProductId);
+    // const isExisted = records.includes(({product:{id}}) => id === currentProductId) // don't work cos includes can only work with simple arrays
+    // const isExisted = records.product.id === currentProductId  // records is an array of record objects so product can't be accessd like that. need to iterate all of records
+    // console.log(isExisted);
+
+    if (isExisted) {
+      changeQuantity(isExisted.id, formData.quantity);
+      reset();
+    } else {
+      addRecord({
+        id: Date.now(),
+        product: currentProduct,
+        quantity: parseInt(formData.quantity),
+        cost: formData.quantity * currentProduct.price,
+        created_at: new Date().toISOString(),
+      });
+    }
     // quantity from formData is a string
-    addRecord({
-      id: Date.now(),
-      product: currentProduct,
-      quantity: parseInt(formData.quantity),
-      cost: formData.quantity * currentProduct.price,
-      created_at: new Date().toISOString(),
-    });
+
     reset();
   };
 

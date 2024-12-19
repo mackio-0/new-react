@@ -3,6 +3,7 @@ import { create } from "zustand";
 const useRecordStore = create((set) => ({
   records: [],
   setRecords: (records) => set({ records }),
+  resetRecords: () => set({ records: [] }),
   addRecord: (record) =>
     set((state) => ({ records: [...state.records, record] })),
   deleteRecord: (recordId) => {
@@ -25,6 +26,28 @@ const useRecordStore = create((set) => ({
         record.quantity != 0 && record.id === recordId
           ? { ...record, quantity: record.quantity - 1 }
           : record
+      ),
+    }));
+  },
+  changeQuantity: (recordId, quantity) => {
+    set((state) => ({
+      records: state.records.map(
+        (record) => {
+          if (record.id === recordId) {
+            const newQuantity = parseInt(record.quantity) + parseInt(quantity);
+            const newCost = newQuantity * record.product.price;
+            return { ...record, cost: newCost, quantity: newQuantity };
+          }
+          return record;
+        }
+        //   record.id === recordId
+        //     ? {
+        //         ...record,
+        //         quantity: record.quantity + quantity,
+        //         cost: record.quantity * record.product.price,
+        //       }
+        //     : record
+        // )
       ),
     }));
   },
