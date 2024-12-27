@@ -334,5 +334,13 @@ const onSubmit = (formData) => {
   });
 };
 
-Day 16 -
-github issues
+Day 17 -
+github issues, and project
+
+Day 18 -
+const fetcher = (...args) => fetch(..args).then((res) => res.json());
+while defining the fetcher function, = (...args) => is called rest parameter, it will collect all argu into an array called args.
+When calling the fetch function, fetch(...args),then() is called spread parameter, it will spread the array args into individual arguments for the fetch function, as if they werer passed separatedly.
+impelement printer functionality with printJS
+html2pdf - library to convert html to pdf
+html2canvas - library to convert html to canvas 

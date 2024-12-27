@@ -4,11 +4,15 @@ import ShowTime from "./ShowTime";
 import { useSWRConfig } from "swr";
 import "ldrs/bouncy";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { HiArrowCircleRight } from "react-icons/hi";
 
 const VoucherListRow = ({
   voucher: { id, voucher_id, customer_name, customer_email, sale_date },
 }) => {
   // console.log(id);
+  // console.log("voucher id",voucher_id);
+  // console.log(voucher)
 
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -43,7 +47,7 @@ const VoucherListRow = ({
           <button
             type="button"
             onClick={handleDeleteBtn}
-            className="size-10 flex justify-center items-center text-sm font-medium text-red-600 bg-white border border-stone-200 rounded-lg hover:bg-stone-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-stone-800 dark:border-stone-700 dark:text-white dark:hover:text-white dark:hover:bg-stone-700 dark:focus:ring-blue-500 dark:focus:text-white"
+            className="size-10 flex justify-center items-center text-sm font-medium text-red-600 bg-white border border-stone-200 rounded-s-lg hover:bg-stone-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-stone-800 dark:border-stone-700 dark:text-white dark:hover:text-white dark:hover:bg-stone-700 dark:focus:ring-blue-500 dark:focus:text-white"
           >
             {isDeleting ? (
               <l-bouncy size="15" speed="1.75" color="red"></l-bouncy>
@@ -51,6 +55,9 @@ const VoucherListRow = ({
               <HiOutlineTrash />
             )}
           </button>
+          <Link className="size-10 flex justify-center items-center text-sm font-medium bg-white border border-stone-200 rounded-e-lg hover:bg-stone-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-stone-800 dark:border-stone-700 dark:text-white dark:hover:text-white dark:hover:bg-stone-700 dark:focus:ring-blue-500 dark:focus:text-white" to={`/voucher/detail/${id}`}>
+          <HiArrowCircleRight/>
+          </Link>
         </div>
       </td>
     </tr>

@@ -3,3 +3,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* @layer components {
+    .voucher-print {
+      @apply font-bold text-lg font-sans;
+    }
+  }
+
+@media print {
+#printArea {
+    font-family: 'Montserrat', sans-serif;
+}
+} */
+
+/* @media print {
+  .font-4xl-print {
+    @apply text-4xl;
+  }
+} */

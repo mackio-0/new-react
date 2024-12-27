@@ -13,4 +13,7 @@ export default {
     extend: {},
   },
   plugins: [require("flowbite/plugin")],
+  media: {
+    print: "print",
+  },
 };

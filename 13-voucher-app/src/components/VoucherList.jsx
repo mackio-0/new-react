@@ -10,7 +10,7 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const VoucherList = () => {
 
   const {data, error, isLoading} = useSWR(`${import.meta.env.VITE_API_URL}/vouchers`, fetcher)
-
+  // console.log(data)
   return (
     <div>
       <div className=" flex justify-between">

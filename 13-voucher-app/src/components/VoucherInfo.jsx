@@ -5,6 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 import SaleForm from "./SaleForm";
 import VoucherTable from "./VoucherTable";
 import useRecordStore from "../stores/useRecordStore";
+import { useNavigate } from "react-router-dom";
 
 const VoucherInfo = () => {
   const {
@@ -13,6 +14,8 @@ const VoucherInfo = () => {
     reset,
     formState: { errors },
   } = useForm();
+
+  const navigate = useNavigate();
 
   const [isSending, setIsSending] = useState(false);
 
@@ -48,13 +51,16 @@ const VoucherInfo = () => {
     // console.log({ ...data, records, total, tax, grandTotal });
     const currentVoucher = { ...data, records, total, tax, grandTotal }
 
-    await fetch(`${import.meta.env.VITE_API_URL}/vouchers`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/vouchers`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(currentVoucher),
     });
+
+    const dataJSON = await res.json();    // return the data that just added to the server
+    console.log(dataJSON)
     setIsSending(false);
     reset();
     resetRecords();
@@ -65,6 +71,10 @@ const VoucherInfo = () => {
         color: "#fff",
       },
     })
+    // console.log(data)
+    if (data.redirect_to_voucher_details) {
+        navigate(`/voucher/detail/${dataJSON.id}`)
+    }
   };
 
   return (
@@ -179,8 +189,32 @@ const VoucherInfo = () => {
       <SaleForm />
       <VoucherTable />
 
-      <div className="flex justify-end items-center gap-5">
+      <div className="flex flex-col justify-center items-end gap-5">
         <div className="">
+        <label
+            htmlFor="redirect_to_voucher_details"
+            className={`me-2 text-sm font-medium dark:text-gray-300`}
+          >
+            Redirect to voucher details.
+          </label>
+          <input
+            id="redirect_to_voucher_details"
+            type="checkbox"
+            form="infoForm"
+            {...register("redirect_to_voucher_details")}
+            defaultValue
+            className={`w-4 h-4  bg-gray-100 border-gray-300 rounded  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600`}
+          />
+        </div>
+        <div className="">
+        <label
+            htmlFor="verify_entry"
+            className={`me-2 text-sm font-medium ${
+              errors.verify_entry ? "text-red-500" : "text-gray-900"
+            } dark:text-gray-300`}
+          >
+            Make Sure all the informations are correct
+          </label>
           <input
             id="verify_entry"
             type="checkbox"
@@ -195,19 +229,11 @@ const VoucherInfo = () => {
                 : "text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600"
             } bg-gray-100 border-gray-300 rounded  dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600`}
           />
-          <label
-            htmlFor="verify_entry"
-            className={`ms-2 text-sm font-medium ${
-              errors.verify_entry ? "text-red-500" : "text-gray-900"
-            } dark:text-gray-300`}
-          >
-            Make Sure all the informations are correct
-          </label>
         </div>
         <button
           type="submit"
           form="infoForm"
-          className="text-white inline-flex items-center gap-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          className="text-white inline-flex items-center gap-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
         >
           <span>Confirm Voucher</span>
           {isSending && (
