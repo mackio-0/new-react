@@ -344,3 +344,6 @@ When calling the fetch function, fetch(...args),then() is called spread paramete
 impelement printer functionality with printJS
 html2pdf - library to convert html to pdf
 html2canvas - library to convert html to canvas 
+impelement download as pdf function with html2pdf
+
+Day 19 -
