@@ -1,16 +1,49 @@
-import React from 'react'
-import { HiDesktopComputer, HiSearch } from "react-icons/hi";
-import { HiComputerDesktop, HiOutlinePencil, HiOutlineTrash, HiPlus } from "react-icons/hi2";
-import { Link } from 'react-router-dom';
-import useSWR from 'swr';
-import VoucherListRow from './VoucherListRow';
+import React, { useRef, useState } from "react";
+import { HiDesktopComputer, HiSearch, HiX } from "react-icons/hi";
+import {
+  HiComputerDesktop,
+  HiOutlinePencil,
+  HiOutlineTrash,
+  HiPlus,
+} from "react-icons/hi2";
+import { Link } from "react-router-dom";
+import useSWR from "swr";
+import VoucherListRow from "./VoucherListRow";
+import { debounce, throttle } from "lodash";
+import "ldrs/bouncy";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const VoucherList = () => {
+  const [search, setSearch] = useState("");
+  // console.log(search)
+  const searchRef = useRef("");
 
-  const {data, error, isLoading} = useSWR(`${import.meta.env.VITE_API_URL}/vouchers`, fetcher)
+  const { data, error, isLoading } = useSWR(
+    search
+      ? `${import.meta.env.VITE_API_URL}/vouchers?voucher_id_like=${search}`
+      : `${import.meta.env.VITE_API_URL}/vouchers`,
+    fetcher
+  );
   // console.log(data)
+
+  // It will cause a api fetch on every word user type, cause strain on server and bottleneck the network
+  // const handleSearch = (e) => {
+  //   // console.log(e.target.value)
+  //   setSearch(e.target.value);
+  // }
+
+  const handleSearch = debounce((e) => {
+    // console.log(e.target.value);
+    // console.log(searchRef)
+    setSearch(e.target.value);
+  }, 500);
+
+  const handleClearSearch = () => {
+    setSearch("");
+    searchRef.current.value = "";
+  };
+
   return (
     <div>
       <div className=" flex justify-between">
@@ -21,14 +54,28 @@ const VoucherList = () => {
             </div>
             <input
               type="text"
+              ref={searchRef}
+              onChange={handleSearch}
               id="input-group-1"
+              // value={search}
               className="bg-stone-50 border border-stone-300 text-stone-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-stone-700 dark:border-stone-600 dark:placeholder-stone-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search Voucher"
             />
+            {search && (
+              <button
+                onClick={handleClearSearch}
+                className="absolute right-0 top-0 bottom-0 my-auto px-3"
+              >
+                <HiX fill="red" className="scale-100 active:scale-75 duration-100" />
+              </button>
+            )}
           </div>
         </div>
         <div>
-          <Link to={"/sale"} className="text-white flex gap-3 justify-between items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <Link
+            to={"/sale"}
+            className="text-white flex gap-3 justify-between items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
             Add Sale
             <HiComputerDesktop />
           </Link>
@@ -63,15 +110,25 @@ const VoucherList = () => {
                 colSpan={5}
                 className="px-6 py-4 font-medium text-stone-900 whitespace-nowrap dark:text-white col text-center"
               >
-                There is no voucher.
+                {isLoading ? (
+                  <>
+                    Loading{" "}
+                    <l-bouncy size="20" speed="1.75" color="black"></l-bouncy>
+                  </>
+                ) : (
+                  "There is no voucher."
+                )}
               </td>
             </tr>
-            {!isLoading && data.map((voucher, index) => <VoucherListRow key={index} voucher={voucher}/>)}
+            {!isLoading &&
+              data.map((voucher, index) => (
+                <VoucherListRow key={index} voucher={voucher} />
+              ))}
           </tbody>
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default VoucherList
+export default VoucherList;

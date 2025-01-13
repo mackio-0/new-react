@@ -47,7 +47,7 @@ const VoucherCard = () => {
   };
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex items-center gap-5">
       <div ref={componentRef} id="printArea" className="w-[14.8cm] p-8">
         <div className="flex justify-between items-center mb-8">
           <div>
@@ -217,10 +217,10 @@ export default VoucherCard;
 //         <p>AYA Bank - 20003674121</p>
 //       </div>
 //       <div className="  ">
-//         <h2 className="font-bold text-xl">MMS IT</h2>
+//         <h2 className="font-bold text-xl">Mackio IT</h2>
 //         <p>48, 1st Floor, Shan Kone St.</p>
 //         <p>+959-250-152-018</p>
-//         <p>enquiry@mms-it.com</p>
+//         <p>enquiry@mackio.com</p>
 //       </div>
 //     </div>
 
