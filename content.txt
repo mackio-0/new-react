@@ -309,7 +309,7 @@ Make a form for the customer info and voucher id
 copy from the product card label and input, then implement useForm()
 default value for date and voucher id
 Two components for the product form and product list table
-VoucherInfor > SaleForm > VoucherTable
+VoucherInfo > SaleForm > VoucherTable
 we need to send the state data between the two components, so we need to use global state. 
 
 saleForm has the product_id for the option, but we need to get the product name or price etc.
@@ -347,3 +347,79 @@ html2canvas - library to convert html to canvas
 impelement download as pdf function with html2pdf
 
 Day 19 -
+Voucher UI change
+json-server filter function, _gte, _lte, order, like (see json-server documentation)
+voucher_search
+put input value into "search" useState value then handle function with onChange then if search  exists, swr string is search query, if not all query
+one problem, onChange on input so it will fetch every action user take on input, it will be a strain on api server
+Throttling and Debouncing
+Using loadash
+Throttling - will run the function on every set timeframe
+Debouncing - will run the function after executing the code inside, delaying set timeframe
+useRef - DOM element ko refrence yuu tae hook
+  const handleSearch = throttle((e) => {
+    setSearch(e.target.value);
+  }, 500);
+
+  const handleClearSearch = () => {
+    setSearch("")
+  }
+
+  <input value={search} />
+
+  {
+    search && <button onClick={handleClearSearch}>Clear</button>
+  }
+This approach works well with the throttle but in debounce
+  const handleSearch = debounce((e) => {
+    setSearch(e.target.value)
+  }, 500)
+
+  const handleClearSearch = () => {
+    setSearch("")
+  }
+
+  <input value={search} />
+
+  {
+    search && <button onClick={handleClearSearch}>Clear</button>
+  }
+It won't work well because while waiting 500ms after typing, input element value property is set to search (which is "") then setSearch become setSearch("") and so on. Thus, we need to grab the element and change value without html value property.
+So we use useRef() hook to refrence the input element and get the value to clear the input.
+How to vertically center with absolute? - className="absolute top-0 bottom-0 my-auto"
+Haptic Click Feedback - <HiX fill="red" className="scale-100 active:scale-75 duration-100" />
+
+Day 20 -
+With laravel api, endpoint, https://voucher-app-api.ygnsh.com/api/v1
+When dealing with laravel api, you need to know a few things beforehand, in post put 
+Accept - application/json         -- we are accepting json msg response
+Content-Type - application/json   -- we are sending json msg request
+API supports search, sort, for pagination (individual pages, prev, next, total counts, to and from)
+async hmr data ma shi pl code ka a lote lote ny yin error tat ml
+ae tot, ?. operator nae lote loh ya tl, shi hma lote ml ma shi yin ma lote vu
+data?.length, data?.[0]?.id, data?.data?.id
+const res = await fetch(endpoint, {method: "GET"});
+res.status - to check the status of the response
+Product Page, change all the endpoints for RUD and search
+in Day 19, we change SWR endpoint with ? `` : ``, but today we change it with useState like this
+  const [fetchUrl, setFetchUrl] = useState(
+    `${import.meta.env.VITE_API_URL}/products`
+  );
+so that we can use that in future if needed (and more appropriate)
+Pagination - prev and next are in {links} and all links, total entries, to, from are in {meta}
+we previously set the fetchUrl with useState in productList so we pass that useState into the pagination component
+but it seems a bit taw thr san so we will make updateFetchUrl = (url) => setFetchUrl(url) and pass that into the pagination
+Voucher page,
+{!isLoading &&
+data?.data?.map((voucher, index) => (
+  <VoucherListRow key={index} voucher={voucher} />
+))}
+one fatal flaw of using map index as key is when deleting a voucher, it will delete the voucher but as the array contents changes, that index will be occupy with new content, so it will be shown as a bug in ui.
+Using the index of the map function as the key prop, like key={index}, can have a negative effect on the performance and correctness of your React application.
+
+When you use the index as the key, React will use the index to identify each component in the array. However, if the array changes (e.g., items are added or removed), the index of each item will also change. This can cause React to:
+  1. Re-render unnecessary components: When the index changes, React will re-render all components, even if their underlying data hasn't changed.
+  2. Cause incorrect component state: If a component's state is tied to its index, changing the index can cause the state to become inconsistent.
+  3. Lead to bugs: In some cases, using the index as the key can lead to bugs that are difficult to track down.
+Instead, it's recommended to use a unique identifier for each item in the array, such as a id or uuid property. This ensures that each component has a stable key, even if the array changes.
+In laravel, if we created a entry successfully, the response status code is 201, not 200.
