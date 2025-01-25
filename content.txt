@@ -186,7 +186,7 @@ App State - root component state, declare in root component and use in other com
 Context Api (Global State) - Provider - context hell
 zustand (Global State) - hook
 Global State -
-All the state are in the RAM, not persistent, not save, no data after reload, local device
+All the state are in the RAM, not persistent, only runtime, not save to local storage, no data after reload, local device
 Server State -
 Backend
 API - REST API
@@ -423,3 +423,26 @@ When you use the index as the key, React will use the index to identify each com
   3. Lead to bugs: In some cases, using the index as the key can lead to bugs that are difficult to track down.
 Instead, it's recommended to use a unique identifier for each item in the array, such as a id or uuid property. This ensures that each component has a stable key, even if the array changes.
 In laravel, if we created a entry successfully, the response status code is 201, not 200.
+
+Day 21 Part 2 -
+saving Token Auth in global state.
+in line 188, Global State -
+All the state are in the RAM, not persistent, only runtime, not save to local storage, no data after reload, local device.
+So we need to save the token to local storage.
+Local Storage vs Session Storage vs Cookies 
+can only store strings, so if we want to store the obj or array, we need to use JSON.stringify().
+Local Storage - store data without exp date, data is shared across all tabs and window of the same origin (domain, protocol, port)
+Session Storage - store data for a single session (browser session), data is not shared across all tabs or window of the same origin (domain, protocol, port)
+Cookies - store data with exp date, data is shared across all tabs and window of the same origin (domain, protocol, port), everytime we request to the server, Cookies will be sent to the server. server can also send cookie back to the client, so we can use cookie to identify the user, like token.
+
+Cookie Setter
+const setCookie = (name, value, daysToExpire) => {
+  const date = new Date();
+  date.setTime(date.getTime() + daysToExpire * 24 * 60 * 60 * 1000);
+  const expires = "expires=" + date.toUTCString();
+  document.cookie = name + "=" + value + ";" + expires + ";path=/"; // name=value;expires=....;path=/
+};
+
+setCookie("hello", "MOM", 3);
+getTime() is used instead of getDate() because getTime() returns the number of milliseconds since the Unix Epoch (January 1, 1970, 00:00:00 UTC), whereas getDate() returns the day of the month (1-31).
+In this case, you want to add a certain number of days to the current date, and then convert that to a timestamp. getTime() provides a timestamp that can be easily manipulated by adding milliseconds.
