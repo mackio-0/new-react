@@ -446,3 +446,88 @@ const setCookie = (name, value, daysToExpire) => {
 setCookie("hello", "MOM", 3);
 getTime() is used instead of getDate() because getTime() returns the number of milliseconds since the Unix Epoch (January 1, 1970, 00:00:00 UTC), whereas getDate() returns the day of the month (1-31).
 In this case, you want to add a certain number of days to the current date, and then convert that to a timestamp. getTime() provides a timestamp that can be easily manipulated by adding milliseconds.
+
+setCookie("my_name", "MKK", 3);
+setCookie(
+  "my_self",
+  JSON.stringify({
+    age: 25,
+    interests: ["game", "books", "how things work"],
+  }),
+  3
+);
+setCookie(
+  "my_skills",
+  JSON.stringify(["react", "nextjs", "laravel", "java EE"]),
+  3
+);
+
+const clearCookie = (name) => {
+  document.cookie =
+    name + "=;" + "expires=Wed, 14 Jun 2017 07:00:00 GMT;path=/";
+};
+
+// clearCookie("my_skills");
+// console.log(document.cookie.split(";")[0].trim())
+
+const clearAllCookies = () => {
+  const cookies = document.cookie.split(";");
+  console.log("Cookies after split:", cookies); // Debug: Log the split cookies
+
+  cookies.map((cookie) => {
+    const trimmedCookie = cookie.trim(); // Capture the trimmed cookie
+    const eqPos = trimmedCookie.indexOf("=");
+    console.log("EqPos:", eqPos)
+    const name = eqPos > -1 ? trimmedCookie.substring(0, eqPos) : trimmedCookie;
+    console.log("Extracted name:", name); // Debug: Log the extracted name
+
+    // Uncomment this to actually delete the cookie
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  });
+};
+clearAllCookies()
+
+Strings in JS are immutable, remember that.
+We can use cookiejs npm package for easy going.
+
+In ReactJS, we can us react-use-cookie.
+Our current weakness, we can call the path localhost:5137/dashboard and see the dashboard without logging in.
+We can use the cookie to check if the user is logged in or not.
+Recall that our dashboard and all of it's nested pages are protected routes and we make it as nested routes in router.jsx
+path: "/dashboard",
+  element: <Layout />,
+  children: [
+    {
+      index: true,
+      element: <DashboardPage />,
+    },
+    {
+      path: "product",
+      element: <ProductPage />,
+    }, ....
+  ],
+Layout component is a wrapper for every protected pages so we can check if the user is logged in or not in that componnet for all the pages.
+const Layout = () => {
+  const [token] = useCookie("my_token");
+  // console.log(token) // empty if not logged in or deleted.
+  // const navigate = useNavigate();
+  if (!token) {
+    return <Navigate to="/" />;
+  }
+
+  // useEffect(() => {
+  //   if (!token) {
+  //     navigate("/");
+  //   }
+  // }, []);
+return (jsx elements);
+};
+What are the differences between two functions, what is side effect in react, how to handle side effects?
+Authentication - verifying who the user is
+Authorization - Determine what the user can do
+const handleLogout = () => {
+    // localStorage.removeItem("token");
+    removeCookie("my_token");
+    // window.location.reload();  // in modern web dev, it's recommended to use more advanced techniques like client-side routing and state management libraries.
+    navigate("/")
+}

@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import useCookie from "react-use-cookie";
 
 const LoginPage = () => {
   const {
@@ -10,6 +11,8 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+
+  const [token, setToken] = useCookie("my_token");
 
   const handleLogin = async (data) => {
     console.log(data);
@@ -26,6 +29,7 @@ const LoginPage = () => {
 
     if (res.status === 200) {
       // localStorage.setItem("token", jsonData.token);
+      setToken(jsonData.token);
       toast.success("Logged in successfully");
       navigate("/dashboard");
     } else {
@@ -96,7 +100,7 @@ const LoginPage = () => {
                       aria-describedby="remember"
                       type="checkbox"
                       className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                      required
+                      
                     />
                   </div>
                   <div className="ml-3 text-sm">

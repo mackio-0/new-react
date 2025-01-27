@@ -6,12 +6,12 @@ import {
   HiDocumentDuplicate,
   HiMiniComputerDesktop,
 } from "react-icons/hi2";
+import Logout from "../components/Logout";
 
 const DashboardPage = () => {
-
   return (
     <section>
-      <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-3 gap-5">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mb-5">
         <div className="col-span-1 row-span-1">
           <ModuleBtn
             url={"/dashboard/product"}
@@ -33,6 +33,10 @@ const DashboardPage = () => {
             icon={<HiDocumentDuplicate className="size-14" />}
           />
         </div>
+      </div>
+      <div className="flex gap-3 items-center justify-end">
+        <p>If you finish your work, you can logout here.</p>
+        <Logout />
       </div>
     </section>
   );

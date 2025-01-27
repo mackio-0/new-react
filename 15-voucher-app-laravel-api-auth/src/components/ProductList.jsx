@@ -8,10 +8,19 @@ import ProductListRowEmpty from "./ProductListRowEmpty";
 import { Link } from "react-router-dom";
 import { throttle } from "lodash";
 import Pagination from "./Pagination";
+import useCookie from "react-use-cookie";
 
 const ProductList = () => {
+  const [token] = useCookie("my_token");
   // console.log(import.meta.env.VITE_API_URL)
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const fetcher = (...args) =>
+    fetch(...args, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => res.json());
 
   const [search, setSearch] = useState("");
   const [fetchUrl, setFetchUrl] = useState(
